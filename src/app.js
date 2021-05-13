@@ -1,3 +1,10 @@
+/*
+ * @description: 
+ * @Author: OriX
+ * @Date: 2021-05-13 20:49:53
+ * @LastEditors: OriX
+ * @LastEditTime: 2021-05-13 21:52:42
+ */
 const Koa = require('koa')
 const app = new Koa()
 const views = require('koa-views')
@@ -14,23 +21,25 @@ onerror(app)
 
 // middlewares
 app.use(bodyparser({
-  enableTypes:['json', 'form', 'text']
+  enableTypes: ['json', 'form', 'text']
 }))
 app.use(json())
 app.use(logger())
+// 使用静态文件解析中间件
 app.use(require('koa-static')(__dirname + '/public'))
 
+// 使用ejs引擎
 app.use(views(__dirname + '/views', {
   extension: 'pug'
 }))
 
-// logger
-app.use(async (ctx, next) => {
+// logger 相当于演示手写logger
+/* app.use(async (ctx, next) => {
   const start = new Date()
   await next()
   const ms = new Date() - start
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
-})
+}) */
 
 // routes
 app.use(index.routes(), index.allowedMethods())
