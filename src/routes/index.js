@@ -3,7 +3,7 @@
  * @Author: OriX
  * @Date: 2021-05-14 14:58:40
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-21 13:45:56
+ * @LastEditTime: 2021-05-21 17:45:11
  */
 const router = require('koa-router')();
 
@@ -27,6 +27,11 @@ router.get('/json', async (ctx, next) => {
   ctx.body = {
     title: 'koa2 json',
     viewNum: session.viewNum,
+  };
+});
+router.get('/jestTest', async (ctx, next) => {
+  ctx.body = {
+    title: 'jest test json',
   };
 });
 
