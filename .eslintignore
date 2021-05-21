@@ -1,0 +1,8 @@
+src/piblic
+test
+node_modules
+.history
+public
+dist
+.umi
+mock
