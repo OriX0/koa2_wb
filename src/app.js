@@ -3,7 +3,7 @@
  * @Author: OriX
  * @Date: 2021-05-13 20:49:53
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-22 19:41:14
+ * @LastEditTime: 2021-05-22 20:57:46
  */
 const Koa = require('koa');
 const app = new Koa();
@@ -19,6 +19,8 @@ const redisStore = require('koa-redis');
 const index = require('./routes/index');
 const userViewRouter = require('./routes/view/user');
 const errorViewRouter = require('./routes/view/error');
+// api路由
+const userApiRouter = require('./routes/api/user');
 // 引入 用于session持久化的redis 配置
 const { REDIS_CONF } = require('./conf/db');
 
@@ -70,6 +72,7 @@ app.use(
 // routes
 app.use(index.routes(), index.allowedMethods());
 app.use(userViewRouter.routes(), userViewRouter.allowedMethods());
+app.use(userApiRouter.routes(), userApiRouter.allowedMethods());
 app.use(errorViewRouter.routes(), errorViewRouter.allowedMethods());
 
 // error-handling
