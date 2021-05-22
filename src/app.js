@@ -3,7 +3,7 @@
  * @Author: OriX
  * @Date: 2021-05-13 20:49:53
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-21 13:41:17
+ * @LastEditTime: 2021-05-22 14:26:40
  */
 const Koa = require('koa');
 const app = new Koa();
@@ -16,6 +16,7 @@ const session = require('koa-generic-session');
 const redisStore = require('koa-redis');
 const index = require('./routes/index');
 const users = require('./routes/users');
+const errorViewRouter = require('./routes/view/error');
 // 引入 用于session持久化的redis 配置
 const { REDIS_CONF } = require('./conf/db');
 
@@ -36,7 +37,7 @@ app.use(require('koa-static')(__dirname + '/public'));
 // 使用ejs引擎
 app.use(
   views(__dirname + '/views', {
-    extension: 'pug',
+    extension: 'ejs',
   })
 );
 // session配置
@@ -67,6 +68,7 @@ app.use(
 // routes
 app.use(index.routes(), index.allowedMethods());
 app.use(users.routes(), users.allowedMethods());
+app.use(errorViewRouter.routes(), errorViewRouter.allowedMethods());
 
 // error-handling
 app.on('error', (err, ctx) => {
