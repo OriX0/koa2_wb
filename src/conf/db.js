@@ -3,7 +3,7 @@
  * @Author: OriX
  * @Date: 2021-05-20 17:41:45
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-21 19:19:36
+ * @LastEditTime: 2021-05-22 19:25:03
  */
 const { isProd } = require('../utils/env');
 let REDIS_CONF = {
@@ -15,7 +15,7 @@ let MYSQL_CONF = {
   prot: '3306',
   user: 'root',
   password: '',
-  database: 'koa_wb_db',
+  database: 'koa2_wb_db',
 };
 if (isProd) {
   // 如果是生产环境 则使用生产环境下的配置

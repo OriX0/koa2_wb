@@ -3,7 +3,7 @@
  * @Author: OriX
  * @Date: 2021-05-13 20:49:53
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-22 14:26:40
+ * @LastEditTime: 2021-05-22 19:41:14
  */
 const Koa = require('koa');
 const app = new Koa();
@@ -12,10 +12,12 @@ const json = require('koa-json');
 const onerror = require('koa-onerror');
 const bodyparser = require('koa-bodyparser');
 const logger = require('koa-logger');
+// 引入koa 操作session和redis的库
 const session = require('koa-generic-session');
 const redisStore = require('koa-redis');
+// 路由
 const index = require('./routes/index');
-const users = require('./routes/users');
+const userViewRouter = require('./routes/view/user');
 const errorViewRouter = require('./routes/view/error');
 // 引入 用于session持久化的redis 配置
 const { REDIS_CONF } = require('./conf/db');
@@ -67,7 +69,7 @@ app.use(
 
 // routes
 app.use(index.routes(), index.allowedMethods());
-app.use(users.routes(), users.allowedMethods());
+app.use(userViewRouter.routes(), userViewRouter.allowedMethods());
 app.use(errorViewRouter.routes(), errorViewRouter.allowedMethods());
 
 // error-handling
