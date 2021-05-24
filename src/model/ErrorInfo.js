@@ -2,7 +2,7 @@
  * @Description: 失败信息的集合 包括 errNo 和message
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-24 16:54:09
+ * @LastEditTime: 2021-05-24 20:18:10
  */
 module.exports = {
   // 用户名已存在
@@ -18,6 +18,10 @@ module.exports = {
   registerUserNameNotExistInfo: {
     errNo: 10003,
     message: '用户名不存在，可以注册',
+  },
+  loginFailInfo: {
+    errNo: 10004,
+    message: '登录失败 请检查您的用户名和密码',
   },
   jsonSchemaFailInfo: {
     errNo: 10009,
