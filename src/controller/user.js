@@ -2,7 +2,7 @@
  * @Description: user controller 层
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-24 20:31:36
+ * @LastEditTime: 2021-05-24 21:14:57
  */
 const { getUserInfo, createUser } = require('../service/user');
 const { SuccessModel, ErrorModel } = require('../model/ResModel');
@@ -67,7 +67,7 @@ async function login({ ctx, userName, password }) {
     // 登录失败
     return new ErrorModel(loginFailInfo);
   }
-  if (ctx.session == null) {
+  if (ctx.session == null || ctx.session.userInfo == null) {
     ctx.session.userInfo = userInfo;
   }
   return new SuccessModel();
