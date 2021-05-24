@@ -2,7 +2,7 @@
  * @Description: user controller 层
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-24 20:28:52
+ * @LastEditTime: 2021-05-24 20:31:36
  */
 const { getUserInfo, createUser } = require('../service/user');
 const { SuccessModel, ErrorModel } = require('../model/ResModel');
@@ -54,7 +54,13 @@ async function register({ userName, password, gender = 3 }) {
     return new ErrorModel(registerFailInfo);
   }
 }
-
+/**
+ * 用户注册
+ * @param {Object} ctx 当前上下文
+ * @param {String} userName
+ * @param {String} password
+ * @returns
+ */
 async function login({ ctx, userName, password }) {
   const userInfo = await getUserInfo(userName, doCrypto(password));
   if (!userInfo) {
