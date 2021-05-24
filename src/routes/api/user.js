@@ -2,10 +2,12 @@
  * @Description: user api
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-24 15:00:40
+ * @LastEditTime: 2021-05-24 17:17:34
  */
 const router = require('koa-router')();
 const { isExist, register } = require('../../controller/user');
+const userValidate = require('../../validate/user');
+const { generateValidate } = require('../../middleware/validate');
 router.prefix('/api/user');
 // 用户名是否存在
 router.post('/isExist', async (ctx, next) => {
@@ -15,7 +17,7 @@ router.post('/isExist', async (ctx, next) => {
   ctx.body = res;
 });
 // 注册
-router.post('/register', async (ctx, next) => {
+router.post('/register', generateValidate(userValidate), async (ctx, next) => {
   const { userName, password, gender } = ctx.request.body;
   // 调用方法
   const res = await register({ userName, password, gender });
