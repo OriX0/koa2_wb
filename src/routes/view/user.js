@@ -2,9 +2,10 @@
  * @Description: user相关操作的路由
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-24 20:35:36
+ * @LastEditTime: 2021-05-24 21:16:40
  */
 const router = require('koa-router')();
+const { loginRedirect } = require('../../middleware/loginChecks');
 /**
  * 获取当前登录的信息
  * @param {ctx} ctx
@@ -28,5 +29,9 @@ router.get('/register', async (ctx, next) => {
 });
 router.get('/login', async (ctx, next) => {
   await ctx.render('login', getLoginInfo(ctx));
+});
+router.get('/setting', loginRedirect, async (ctx, next) => {
+  // 暂时占位 测试 重定向中间件
+  await ctx.render('index');
 });
 module.exports = router;

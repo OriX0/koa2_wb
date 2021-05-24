@@ -2,7 +2,7 @@
  * @Description: 失败信息的集合 包括 errNo 和message
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-24 20:18:10
+ * @LastEditTime: 2021-05-24 20:49:44
  */
 module.exports = {
   // 用户名已存在
@@ -22,6 +22,10 @@ module.exports = {
   loginFailInfo: {
     errNo: 10004,
     message: '登录失败 请检查您的用户名和密码',
+  },
+  loginCheckFailInfo: {
+    errNo: 10005,
+    message: '当前未登录',
   },
   jsonSchemaFailInfo: {
     errNo: 10009,
