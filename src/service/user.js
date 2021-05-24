@@ -2,7 +2,7 @@
  * @Description: user service层 处理数据 格式化数据
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-22 21:45:58
+ * @LastEditTime: 2021-05-24 14:40:39
  */
 const { User } = require('../db/model/index');
 const { formateUser } = require('./_formate');
@@ -29,7 +29,25 @@ async function getUserInfo(userName, password) {
   // 找到了返回dataValues
   return formateUser(queryResult.dataValues);
 }
+/**
+ * 创建用户
+ * @param {String} userName
+ * @param {String} password
+ * @param {number} gender
+ * @param {String} nickName
+ * @returns
+ */
+async function createUser({ userName, password, gender, nickName }) {
+  const result = await User.create({
+    userName,
+    password,
+    gender,
+    nickName: nickName ? nickName : userName,
+  });
+  return result.dataValues;
+}
 
 module.exports = {
   getUserInfo,
+  createUser,
 };

@@ -2,11 +2,12 @@
  * @Description: user controller 层
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-22 21:54:28
+ * @LastEditTime: 2021-05-24 15:02:42
  */
-const { getUserInfo } = require('../service/user');
+const { getUserInfo, createUser } = require('../service/user');
 const { SuccessModel, ErrorModel } = require('../model/ResModel');
-const { registerUserNameNotExistInfo } = require('../model/ErrorInfo');
+const { registerUserNameNotExistInfo, registerUserNameIsExistInfo, registerFailInfo } = require('../model/ErrorInfo');
+const doCrypto = require('../utils/crypto');
 /**
  * 用户是否存在 不存在可以注册
  * @param {string} userName  用户名
@@ -23,6 +24,27 @@ async function isExist(userName) {
   }
 }
 
+async function register({ userName, password, gender = 3 }) {
+  // 先进行用户名是否存在的验证
+  const userInfo = await getUserInfo(userName);
+  if (userInfo) {
+    return new ErrorModel(registerUserNameIsExistInfo);
+  }
+  // 调用服务层进行注册
+  try {
+    await createUser({
+      userName,
+      password: doCrypto(password),
+      gender,
+    });
+    return new SuccessModel();
+  } catch (error) {
+    console.log(error.message, error.stack);
+    return new ErrorModel(registerFailInfo);
+  }
+}
+
 module.exports = {
   isExist,
+  register,
 };

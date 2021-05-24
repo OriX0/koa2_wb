@@ -2,7 +2,7 @@
  * @Description: 返回结果的格式统一化
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-22 21:44:29
+ * @LastEditTime: 2021-05-24 15:08:04
  */
 class BaseModel {
   constructor({ errNo, data, message }) {
@@ -16,7 +16,7 @@ class BaseModel {
   }
 }
 class SuccessModel extends BaseModel {
-  constructor({ data = {} }) {
+  constructor(data = {}) {
     super({
       errNo: 0,
       data,

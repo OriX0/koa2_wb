@@ -3,7 +3,7 @@
  * @Author: OriX
  * @Date: 2021-05-13 20:49:53
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-22 20:57:46
+ * @LastEditTime: 2021-05-24 14:50:56
  */
 const Koa = require('koa');
 const app = new Koa();
@@ -23,6 +23,7 @@ const errorViewRouter = require('./routes/view/error');
 const userApiRouter = require('./routes/api/user');
 // 引入 用于session持久化的redis 配置
 const { REDIS_CONF } = require('./conf/db');
+const { SESSION_SCECRET_KEY } = require('./conf/secretKey');
 
 // error handler
 onerror(app);
@@ -45,7 +46,7 @@ app.use(
   })
 );
 // session配置
-app.keys = ['Orix_192_51#']; // 加密秘钥
+app.keys = [SESSION_SCECRET_KEY]; // 加密秘钥
 app.use(
   session({
     key: 'weibo_sid', // cookies的名字
