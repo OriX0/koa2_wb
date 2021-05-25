@@ -5,7 +5,7 @@
         <!-- 左侧 -->
         <div class="col-8">
             <h5 class="margin-bottom-10">基本信息</h5>
-            <form>
+            <form enctype="multipart/form-data">
                 <div class="form-group row">
                     <label for="input-nick" class="col-sm-2 col-form-label">昵称</label>
                     <div class="col-sm-10">
@@ -22,7 +22,7 @@
                     <label for="file-picture" class="col-sm-2 col-form-label">头像</label>
                     <div class="col-sm-10">
                         <img src="<%= picture%>" style="width: 100px;" class="margin-bottom-10" id="img-picture"/>
-                        <input type="file" class="form-control-file" accept="image/*" id="file-picture">
+                        <input type="file"  class="form-control-file" accept="image/*" id="file-picture">
                     </div>
                 </div>
                 <center><button type="submit" class="btn btn-primary" id="btn-submit-info">保存</button></center>
@@ -76,6 +76,7 @@ $(function() {
                 return
             }
             // 成功
+            console.log(data);
             $imgPicture.attr('src', data.url)
         })
     })
