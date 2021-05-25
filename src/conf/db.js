@@ -3,7 +3,7 @@
  * @Author: OriX
  * @Date: 2021-05-20 17:41:45
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-22 19:25:03
+ * @LastEditTime: 2021-05-25 17:30:35
  */
 const { isProd } = require('../utils/env');
 let REDIS_CONF = {
@@ -14,7 +14,7 @@ let MYSQL_CONF = {
   host: '127.0.0.1',
   prot: '3306',
   user: 'root',
-  password: '',
+  password: '12345wszcx',
   database: 'koa2_wb_db',
 };
 if (isProd) {
