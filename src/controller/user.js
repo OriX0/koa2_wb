@@ -2,7 +2,7 @@
  * @Description: user controller 层
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-25 16:10:41
+ * @LastEditTime: 2021-05-25 20:29:47
  */
 const { getUserInfo, createUser, deleteUser } = require('../service/user');
 const { SuccessModel, ErrorModel } = require('../model/ResModel');
@@ -11,6 +11,7 @@ const {
   registerUserNameIsExistInfo,
   registerFailInfo,
   loginFailInfo,
+  deleteUserFailInfo
 } = require('../model/ErrorInfo');
 const doCrypto = require('../utils/crypto');
 /**
@@ -82,6 +83,7 @@ async function deleteCurrentUser (userName) {
   if (result) {
     return new SuccessModel();
   }
+  return new ErrorModel(deleteUserFailInfo)
 
 }
 module.exports = {

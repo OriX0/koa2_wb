@@ -2,7 +2,7 @@
  * @Description: 失败信息的集合 包括 errNo 和message
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-24 20:49:44
+ * @LastEditTime: 2021-05-25 20:29:36
  */
 module.exports = {
   // 用户名已存在
@@ -30,5 +30,10 @@ module.exports = {
   jsonSchemaFailInfo: {
     errNo: 10009,
     message: '数据格式校验不通过 请检查',
+  },
+  // 删除用户失败
+  deleteUserFailInfo: {
+    errno: 10010,
+    message: '删除用户失败'
   },
 };
