@@ -2,7 +2,7 @@
  * @Description: user service层 处理数据 格式化数据
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-24 14:40:39
+ * @LastEditTime: 2021-05-25 16:26:57
  */
 const { User } = require('../db/model/index');
 const { formateUser } = require('./_formate');
@@ -11,7 +11,7 @@ const { formateUser } = require('./_formate');
  * @param {Stirng} userName 用户名
  * @param {String} password 密码
  */
-async function getUserInfo(userName, password) {
+async function getUserInfo (userName, password) {
   let whereOpt = {
     userName,
   };
@@ -37,7 +37,7 @@ async function getUserInfo(userName, password) {
  * @param {String} nickName
  * @returns
  */
-async function createUser({ userName, password, gender, nickName }) {
+async function createUser ({ userName, password, gender, nickName }) {
   const result = await User.create({
     userName,
     password,
@@ -46,8 +46,21 @@ async function createUser({ userName, password, gender, nickName }) {
   });
   return result.dataValues;
 }
-
+/**
+ * 数据库 删除某个用户
+ * @param {String} userName 
+ * @returns 
+ */
+async function deleteUser (userName) {
+  const result = await User.destroy({
+    where: {
+      userName
+    }
+  })
+  return result > 0;
+}
 module.exports = {
   getUserInfo,
   createUser,
+  deleteUser
 };

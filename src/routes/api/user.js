@@ -2,12 +2,14 @@
  * @Description: user api
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-24 20:23:27
+ * @LastEditTime: 2021-05-25 16:12:06
  */
 const router = require('koa-router')();
-const { isExist, register, login } = require('../../controller/user');
+const { isExist, register, login, deleteCurrentUser } = require('../../controller/user');
 const userValidate = require('../../validate/user');
 const { generateValidate } = require('../../middleware/validate');
+const { isTest } = require('../../utils/env');
+const { loginCheck } = require('../../middleware/loginChecks')
 router.prefix('/api/user');
 // 用户名是否存在
 router.post('/isExist', async (ctx, next) => {
@@ -29,4 +31,12 @@ router.post('/login', generateValidate(userValidate), async (ctx, next) => {
   // 调用控制层的方法
   ctx.body = await login({ ctx, userName, password });
 });
+// 删除当前用户 条件：当前已登录  当前为测试环境
+router.post('/delete', loginCheck, async (ctx, next) => {
+  if (isTest) {
+    const { userName } = ctx.session.userInfo;
+    // 调用控制层的方法
+    ctx.body = await deleteCurrentUser(userName);
+  }
+})
 module.exports = router;
