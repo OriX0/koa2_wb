@@ -2,13 +2,13 @@
  * @Description: user service层 处理数据 格式化数据
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-25 16:26:57
+ * @LastEditTime: 2021-05-25 16:47:55
  */
 const { User } = require('../db/model/index');
 const { formateUser } = require('./_formate');
 /**
  * 获取用户信息
- * @param {Stirng} userName 用户名
+ * @param {String} userName 用户名
  * @param {String} password 密码
  */
 async function getUserInfo (userName, password) {

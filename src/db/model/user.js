@@ -2,23 +2,23 @@
  * @Description: user model
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-22 19:21:59
+ * @LastEditTime: 2021-05-25 16:47:43
  */
 const seq = require('../seq');
-const { STIRNG, DECIMAL, BOOLEAN, TEXT } = require('../types');
+const { STRING, DECIMAL, BOOLEAN, TEXT } = require('../types');
 
 const User = seq.define('user', {
   userName: {
-    type: STIRNG,
+    type: STRING,
     allowNull: false,
     unique: true,
   },
   password: {
-    type: STIRNG,
+    type: STRING,
     allowNull: false,
   },
   nickName: {
-    type: STIRNG,
+    type: STRING,
     allowNull: false,
     comment: '昵称 可重复',
   },
@@ -28,11 +28,11 @@ const User = seq.define('user', {
     comment: '性别 1为男 2为女 3保密',
   },
   picture: {
-    type: STIRNG,
+    type: STRING,
     comment: '头像 图片链接',
   },
   city: {
-    type: STIRNG,
+    type: STRING,
     comment: '城市',
   },
 });
