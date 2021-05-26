@@ -2,7 +2,7 @@
  * @Description: user controller 层
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-26 17:03:48
+ * @LastEditTime: 2021-05-26 18:53:04
  */
 const { getUserInfo, createUser, deleteUser, updateUserInfo } = require('../service/user');
 const { SuccessModel, ErrorModel } = require('../model/ResModel');
@@ -107,7 +107,13 @@ async function changeInfo(ctx, { nickName, city, picture }) {
   }
   return new ErrorModel(changeInfoFailInfo);
 }
-
+/**
+ * 更新用户密码
+ * @param {Object} ctx
+ * @param {String} password  旧密码 用于验证
+ * @param {String} newPassword  新密码
+ * @returns
+ */
 async function changePassword(ctx, password, newPassword) {
   const { userName } = ctx.session.userInfo;
   const result = await updateUserInfo(
@@ -119,6 +125,15 @@ async function changePassword(ctx, password, newPassword) {
   }
   return new ErrorModel(changePasswordFailInfo);
 }
+/**
+ * 退出登录
+ * @param {Object} ctx
+ * @returns
+ */
+async function logOut(ctx) {
+  delete ctx.session.userInfo;
+  return new SuccessModel();
+}
 module.exports = {
   isExist,
   register,
@@ -126,4 +141,5 @@ module.exports = {
   deleteCurrentUser,
   changeInfo,
   changePassword,
+  logOut,
 };
