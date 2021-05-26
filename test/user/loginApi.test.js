@@ -3,7 +3,7 @@
  * @Author: OriX
  * @Date: 2021-05-25 16:57:18
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-25 18:15:37
+ * @LastEditTime: 2021-05-26 19:17:37
  */
 // 引入服务
 const server = require('../server');
@@ -15,60 +15,79 @@ const testUser = {
   userName,
   password,
   gender,
-}
+};
 // 定义用于保存登录成功的cookies
 let COOKIES = '';
 // 注册
 test('测试注册功能 结果应该为成功', async () => {
-  const res = await server
-    .post('/api/user/register')
-    .send(testUser);
-  expect(res.body.errNo).toBe(0)
-})
+  const res = await server.post('/api/user/register').send(testUser);
+  expect(res.body.errNo).toBe(0);
+});
 // 重复注册
 test('重复注册 应该为失败', async () => {
-  const res = await server
-    .post('/api/user/register')
-    .send(testUser);
-  expect(res.body.errNo).not.toBe(0)
-})
+  const res = await server.post('/api/user/register').send(testUser);
+  expect(res.body.errNo).not.toBe(0);
+});
 // 测试格式验证
 test('重复注册 应该为失败', async () => {
-  const res = await server
-    .post('/api/user/register')
-    .send({
-      userName: "12",
-      password: '1',
-      gender: "xxsas"
-    });
-  expect(res.body.errNo).not.toBe(0)
-})
+  const res = await server.post('/api/user/register').send({
+    userName: '12',
+    password: '1',
+    gender: 'xxsas',
+  });
+  expect(res.body.errNo).not.toBe(0);
+});
 // 用户名是否存在接口
 test('测试用户名是否存在 应该返回存在 ', async () => {
-  const res = await server.post('/api/user/isExist').send({ userName })
-  expect(res.body.errNo).toBe(0)
-})
+  const res = await server.post('/api/user/isExist').send({ userName });
+  expect(res.body.errNo).toBe(0);
+});
 
 // 登录接口
 test('测试登录接口 应该登录成功', async () => {
   const res = await server.post('/api/user/login').send({
     userName,
-    password
-  })
-  expect(res.body.errNo).toBe(0)
+    password,
+  });
+  expect(res.body.errNo).toBe(0);
   COOKIES = res.headers['set-cookie'].join(';');
-  console.log(COOKIES)
-
-})
+});
+// 更新用户信息
+test('更新用户信息 应该更新成功 ', async () => {
+  const res = await server
+    .patch('/api/user/changeInfo')
+    .send({
+      nickName: '测试昵称',
+      city: '测试城市',
+      picture: 'test.png',
+    })
+    .set('cookie', COOKIES);
+  expect(res.body.errNo).toBe(0);
+});
+//  更新用户密码
+test('更新用户信息 应该更新成功 ', async () => {
+  const res = await server
+    .patch('/api/user/changePassword')
+    .send({
+      password,
+      newPassword: 'testpassword',
+    })
+    .set('cookie', COOKIES);
+  expect(res.body.errNo).toBe(0);
+});
 
 // 删除用户接口
 test('删除当前登录的用户 ', async () => {
   const res = await server.post('/api/user/delete').set('cookie', COOKIES);
   expect(res.body.errNo).toBe(0);
-})
+});
+//  退出登录
+test('退出登录应该返回成功 ', async () => {
+  const res = await server.post('/api/user/logout').set('cookie', COOKIES);
+});
+
 // 删除后 查询该用户应该是不存在
 test('删除后查询该用户应该是不存在 ', async () => {
-  const res = await server.post('/api/user/isExist').send({ userName })
-  expect(res.body.errNo).not.toBe(0)
-})
-
+  const res = await server.post('/api/user/isExist').send({ userName });
+  expect(res.body.errNo).not.toBe(0);
+});
