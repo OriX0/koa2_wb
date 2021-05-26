@@ -2,7 +2,7 @@
  * @Description: 失败信息的集合 包括 errNo 和message
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-26 16:29:34
+ * @LastEditTime: 2021-05-26 17:00:59
  */
 module.exports = {
   // 用户名已存在
@@ -26,6 +26,10 @@ module.exports = {
   loginCheckFailInfo: {
     errNo: 10005,
     message: '当前未登录',
+  },
+  changePasswordFailInfo: {
+    errNo: 10007,
+    messgae: '修改密码失败',
   },
   changeInfoFailInfo: {
     errno: 10008,

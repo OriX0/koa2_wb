@@ -2,10 +2,10 @@
  * @Description: user api
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-26 16:35:10
+ * @LastEditTime: 2021-05-26 17:03:28
  */
 const router = require('koa-router')();
-const { isExist, register, login, deleteCurrentUser, changeInfo } = require('../../controller/user');
+const { isExist, register, login, deleteCurrentUser, changeInfo, changePassword } = require('../../controller/user');
 const userValidate = require('../../validate/user');
 const { generateValidate } = require('../../middleware/validate');
 const { isTest } = require('../../utils/env');
@@ -44,5 +44,11 @@ router.patch('/changeInfo', loginCheck, generateValidate(userValidate), async (c
   const { nickName, city, picture } = ctx.request.body;
   // 调用控制层
   ctx.body = await changeInfo(ctx, { nickName, city, picture });
+});
+// 更新用户密码
+router.patch('/changePassword', loginCheck, generateValidate(userValidate), async (ctx, next) => {
+  const { newPassword, password } = ctx.request.body;
+  // 调用控制层
+  ctx.body = await changePassword(ctx, password, newPassword);
 });
 module.exports = router;

@@ -2,7 +2,7 @@
  * @Description: user controller 层
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-26 16:45:29
+ * @LastEditTime: 2021-05-26 17:03:48
  */
 const { getUserInfo, createUser, deleteUser, updateUserInfo } = require('../service/user');
 const { SuccessModel, ErrorModel } = require('../model/ResModel');
@@ -13,6 +13,7 @@ const {
   loginFailInfo,
   deleteUserFailInfo,
   changeInfoFailInfo,
+  changePasswordFailInfo,
 } = require('../model/ErrorInfo');
 const doCrypto = require('../utils/crypto');
 /**
@@ -106,10 +107,23 @@ async function changeInfo(ctx, { nickName, city, picture }) {
   }
   return new ErrorModel(changeInfoFailInfo);
 }
+
+async function changePassword(ctx, password, newPassword) {
+  const { userName } = ctx.session.userInfo;
+  const result = await updateUserInfo(
+    { newPassword: doCrypto(newPassword) },
+    { userName, password: doCrypto(password) }
+  );
+  if (result) {
+    return new SuccessModel();
+  }
+  return new ErrorModel(changePasswordFailInfo);
+}
 module.exports = {
   isExist,
   register,
   login,
   deleteCurrentUser,
   changeInfo,
+  changePassword,
 };
