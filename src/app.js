@@ -3,7 +3,7 @@
  * @Author: OriX
  * @Date: 2021-05-13 20:49:53
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-26 00:54:26
+ * @LastEditTime: 2021-05-26 20:45:29
  */
 const Koa = require('koa');
 const app = new Koa();
@@ -13,12 +13,12 @@ const onerror = require('koa-onerror');
 const bodyparser = require('koa-bodyparser');
 const logger = require('koa-logger');
 const path = require('path');
-const koa_static = require('koa-static')
+const koa_static = require('koa-static');
 // 引入koa 操作session和redis的库
 const session = require('koa-generic-session');
 const redisStore = require('koa-redis');
-// 路由
-const index = require('./routes/index');
+// 视图路由
+const blogViewRouter = require('./routes/view/blog');
 const userViewRouter = require('./routes/view/user');
 const errorViewRouter = require('./routes/view/error');
 // api路由
@@ -27,8 +27,6 @@ const userApiRouter = require('./routes/api/user');
 // 引入 用于session持久化的redis 配置
 const { REDIS_CONF } = require('./conf/db');
 const { SESSION_SECRET_KEY } = require('./conf/secretKey');
-// 引入常量
-const { DIST_FOLDER_PATH } = require('./conf/constant')
 
 // error handler
 onerror(app);
@@ -43,7 +41,7 @@ app.use(json());
 app.use(logger());
 // 使用静态文件解析中间件
 app.use(koa_static(__dirname + '/public'));
-app.use(koa_static(path.join(__dirname, '..', 'uploadFiles')))
+app.use(koa_static(path.join(__dirname, '..', 'uploadFiles')));
 
 // 使用ejs引擎
 app.use(
@@ -77,7 +75,7 @@ app.use(
 }) */
 
 // routes
-app.use(index.routes(), index.allowedMethods());
+app.use(blogViewRouter.routes(), blogViewRouter.allowedMethods());
 app.use(userViewRouter.routes(), userViewRouter.allowedMethods());
 app.use(userApiRouter.routes(), userApiRouter.allowedMethods());
 app.use(utilsApiRouter.routes(), utilsApiRouter.allowedMethods());
