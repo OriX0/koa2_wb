@@ -2,7 +2,7 @@
  * @Description: user service层 处理数据 格式化数据
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-25 16:47:55
+ * @LastEditTime: 2021-05-26 16:39:40
  */
 const { User } = require('../db/model/index');
 const { formateUser } = require('./_formate');
@@ -11,7 +11,7 @@ const { formateUser } = require('./_formate');
  * @param {String} userName 用户名
  * @param {String} password 密码
  */
-async function getUserInfo (userName, password) {
+async function getUserInfo(userName, password) {
   let whereOpt = {
     userName,
   };
@@ -37,7 +37,7 @@ async function getUserInfo (userName, password) {
  * @param {String} nickName
  * @returns
  */
-async function createUser ({ userName, password, gender, nickName }) {
+async function createUser({ userName, password, gender, nickName }) {
   const result = await User.create({
     userName,
     password,
@@ -48,19 +48,51 @@ async function createUser ({ userName, password, gender, nickName }) {
 }
 /**
  * 数据库 删除某个用户
- * @param {String} userName 
- * @returns 
+ * @param {String} userName
+ * @returns
  */
-async function deleteUser (userName) {
+async function deleteUser(userName) {
   const result = await User.destroy({
     where: {
-      userName
-    }
-  })
+      userName,
+    },
+  });
   return result > 0;
+}
+/**
+ * 数据库 更新某用户
+ * @param {object} param0  要修改的内容
+ * @param {object} param1 原来的内容
+ */
+async function updateUserInfo({ newPassword, newCity, newNickName, newPicture }, { userName, password }) {
+  const updateObj = {};
+
+  if (newPassword) {
+    updateObj.password = newPassword;
+  }
+  if (newCity) {
+    updateObj.city = newCity;
+  }
+  if (newNickName) {
+    updateObj.nickName = newNickName;
+  }
+  if (newPicture) {
+    updateObj.picture = newPicture;
+  }
+  const whereObj = {
+    userName,
+  };
+  if (password) {
+    whereObj.password = password;
+  }
+  const result = await User.update(updateObj, {
+    where: whereObj,
+  });
+  return result[0] > 0;
 }
 module.exports = {
   getUserInfo,
   createUser,
-  deleteUser
+  deleteUser,
+  updateUserInfo,
 };

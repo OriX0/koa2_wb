@@ -2,7 +2,7 @@
  * @Description: 失败信息的集合 包括 errNo 和message
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-25 20:29:36
+ * @LastEditTime: 2021-05-26 16:29:34
  */
 module.exports = {
   // 用户名已存在
@@ -27,6 +27,10 @@ module.exports = {
     errNo: 10005,
     message: '当前未登录',
   },
+  changeInfoFailInfo: {
+    errno: 10008,
+    message: '修改基本信息失败',
+  },
   jsonSchemaFailInfo: {
     errNo: 10009,
     message: '数据格式校验不通过 请检查',
@@ -34,6 +38,6 @@ module.exports = {
   // 删除用户失败
   deleteUserFailInfo: {
     errno: 10010,
-    message: '删除用户失败'
+    message: '删除用户失败',
   },
 };
