@@ -2,9 +2,9 @@
  * @Description: blog 服务层
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-26 21:57:39
+ * @LastEditTime: 2021-05-27 15:13:15
  */
-const Blog = require('../db/model/blog');
+const { Blog } = require('../db/model/index');
 /**
  * 数据库创建微博
  * @param {Object} param0  所需要的的数据  userId, content, image
