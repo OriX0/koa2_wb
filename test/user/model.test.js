@@ -3,7 +3,7 @@
  * @Author: OriX
  * @Date: 2021-05-25 16:44:27
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-25 16:55:43
+ * @LastEditTime: 2021-05-27 15:48:55
  */
 const { User } = require('../../src/db/model/index');
 // 新建
@@ -12,11 +12,11 @@ test('验证User模型的各个属性 ', () => {
   const createUser = User.build({
     userName: 'niannian',
     password: '12345wszcx',
-    nickName: userName,
+    nickName: 'niannian',
     gender: 1,
     picture: 'xx.png',
-    city: 'hangzhou'
-  })
+    city: 'hangzhou',
+  });
   // 验证各个属性
   expect(createUser.userName).toBe('niannian');
   expect(createUser.password).toBe('12345wszcx');
@@ -24,4 +24,4 @@ test('验证User模型的各个属性 ', () => {
   expect(createUser.gender).toBe(1);
   expect(createUser.picture).toBe('xx.png');
   expect(createUser.city).toBe('hangzhou');
-})
+});
