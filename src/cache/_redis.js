@@ -3,7 +3,7 @@
  * @Author: OriX
  * @Date: 2021-05-20 17:43:52
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-20 18:50:54
+ * @LastEditTime: 2021-05-28 20:36:00
  */
 const redis = require('redis');
 const { REDIS_CONF } = require('../conf/db');
@@ -11,8 +11,8 @@ const { REDIS_CONF } = require('../conf/db');
 // 创建客户端
 const redisClient = redis.createClient(REDIS_CONF.port, REDIS_CONF.host);
 // 检测redis的连接状态 遇到错误报错
-redisClient.on_error(err => {
-  console.log('redis error', err);
+redisClient.on('error', err => {
+  console.error('redis error', err);
 });
 /**redis set方法
  *
@@ -25,7 +25,7 @@ function set(key, value, timeout = 60 * 60) {
     value = JSON.stringify(value);
   }
   // 设置值
-  redisClient.set(key.value);
+  redisClient.set(key, value);
   // 设置过期时间
   redisClient.expire(key, timeout);
 }
