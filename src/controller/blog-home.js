@@ -15,7 +15,6 @@ const { createBlogFailInfo } = require('../model/ErrorInfo');
  * @returns
  */
 async function create({ userId, content, image }) {
-  console.log(userId, content, image);
   try {
     const blog = await createBlog({
       userId,
