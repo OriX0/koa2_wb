@@ -2,13 +2,18 @@
  * @Description: 广场页博客的缓存
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-28 20:27:25
+ * @LastEditTime: 2021-05-28 20:58:10
  */
 
 const { get, set } = require('./_redis');
 const { getBlogListByUser } = require('../service/blog');
 const BLOG_CACHE_PREFIX = 'weibo_square';
-
+/**
+ * 获取广场页缓存数据列表
+ * @param {Number} pageIndex 当前页面索引
+ * @param {Number} pageSize 每页显示数量
+ * @returns
+ */
 async function getSquareCacheList(pageIndex, pageSize) {
   const Key = `${BLOG_CACHE_PREFIX}-${pageIndex}-${pageSize}`;
   const cacheValue = await get(Key);

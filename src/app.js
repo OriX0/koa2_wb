@@ -3,7 +3,7 @@
  * @Author: OriX
  * @Date: 2021-05-13 20:49:53
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-28 20:11:53
+ * @LastEditTime: 2021-05-28 20:59:37
  */
 const Koa = require('koa');
 const app = new Koa();
@@ -24,7 +24,7 @@ const errorViewRouter = require('./routes/view/error');
 // api路由
 const utilsApiRouter = require('./routes/api/utils');
 const userApiRouter = require('./routes/api/user');
-const blogHomeApiRouter = require('./routes/api/blog');
+const blogHomeApiRouter = require('./routes/api/blog-home');
 const blogProfileApiRouter = require('./routes/api/blog-proflie');
 const blogSquareApiRouter = require('./routes/api/blog-square');
 // 引入 用于session持久化的redis 配置

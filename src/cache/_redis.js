@@ -3,7 +3,7 @@
  * @Author: OriX
  * @Date: 2021-05-20 17:43:52
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-28 20:36:00
+ * @LastEditTime: 2021-05-28 20:58:31
  */
 const redis = require('redis');
 const { REDIS_CONF } = require('../conf/db');
@@ -30,9 +30,9 @@ function set(key, value, timeout = 60 * 60) {
   redisClient.expire(key, timeout);
 }
 /**
- *
+ * 获取值 返回一个promise
  * @param {key} 键
- * @returns  返回一个promise
+ * @returns
  */
 function get(key) {
   return new Promise((resolve, reject) => {
