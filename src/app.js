@@ -3,7 +3,7 @@
  * @Author: OriX
  * @Date: 2021-05-13 20:49:53
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-27 21:44:19
+ * @LastEditTime: 2021-05-28 20:11:53
  */
 const Koa = require('koa');
 const app = new Koa();
@@ -25,7 +25,8 @@ const errorViewRouter = require('./routes/view/error');
 const utilsApiRouter = require('./routes/api/utils');
 const userApiRouter = require('./routes/api/user');
 const blogHomeApiRouter = require('./routes/api/blog');
-const BlogProfileRouter = require('./routes/api/blog-proflie');
+const blogProfileApiRouter = require('./routes/api/blog-proflie');
+const blogSquareApiRouter = require('./routes/api/blog-square');
 // 引入 用于session持久化的redis 配置
 const { REDIS_CONF } = require('./conf/db');
 const { SESSION_SECRET_KEY } = require('./conf/secretKey');
@@ -82,7 +83,8 @@ app.use(userViewRouter.routes(), userViewRouter.allowedMethods());
 app.use(userApiRouter.routes(), userApiRouter.allowedMethods());
 app.use(utilsApiRouter.routes(), utilsApiRouter.allowedMethods());
 app.use(blogHomeApiRouter.routes(), blogHomeApiRouter.allowedMethods());
-app.use(BlogProfileRouter.routes(), BlogProfileRouter.allowedMethods());
+app.use(blogProfileApiRouter.routes(), blogProfileApiRouter.allowedMethods());
+app.use(blogSquareApiRouter.routes(), blogSquareApiRouter.allowedMethods());
 app.use(errorViewRouter.routes(), errorViewRouter.allowedMethods());
 
 // error-handling
