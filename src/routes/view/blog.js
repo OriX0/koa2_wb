@@ -2,7 +2,7 @@
  * @Description: blog 视图层 路由
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-29 19:54:03
+ * @LastEditTime: 2021-05-29 20:12:25
  */
 const router = require('koa-router')();
 const { loginRedirect } = require('../../middleware/loginChecks');
@@ -50,7 +50,6 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
   // 获取关注列表
   const followerResult = await getFollowers(userId);
   const { count: followerCount, list: followerList } = followerResult.data;
-  console.log('api层 ', followerList);
   // 渲染页面
   await ctx.render('profile', {
     blogData: {
