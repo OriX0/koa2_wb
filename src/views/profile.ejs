@@ -1,8 +1,10 @@
 <!--
- * @Description: profile 模板文件 需要  blogData isEmpty .count .blogList .pageIndex .pageSize
+ * @Description: profile 模板文件
+ *    blogData .isEmpty .count .blogList .pageIndex .pageSize
+ *    userData .userInfo .isMe   .fansData (.count list)
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-27 21:24:52
+ * @LastEditTime: 2021-05-29 14:21:07
 -->
 <%- include('layout/header', { title: '微博 - 个人主页', isNav: true, list: true })%>
 
@@ -39,7 +41,7 @@
       </div>
 
       <!-- 粉丝 -->
-      <%# include('widgets/fans', { count: userData.fansData.count, userList: userData.fansData.list })%>
+      <%-include('widgets/fans', { count: userData.fansData.count, userList: userData.fansData.list })%>
 
       <!-- 关注 -->
       <%# include('widgets/followers', { count: userData.followersData.count, userList: userData.followersData.list })%>

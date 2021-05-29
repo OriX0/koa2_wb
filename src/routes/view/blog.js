@@ -2,12 +2,13 @@
  * @Description: blog 视图层 路由
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-28 20:42:02
+ * @LastEditTime: 2021-05-29 15:20:56
  */
 const router = require('koa-router')();
 const { loginRedirect } = require('../../middleware/loginChecks');
 const { getProfileBlogList } = require('../../controller/blog-profile');
 const { getSquareBolgList } = require('../../controller/blog-square');
+const { getFans } = require('../../controller/blog-relation');
 const { isExist } = require('../../controller/user');
 // 访问首页
 router.get('/', loginRedirect, async (ctx, next) => {
@@ -22,7 +23,6 @@ router.get('/profile', loginRedirect, async (ctx, next) => {
 // 访问他人主页
 router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
   const { userName: curUserName } = ctx.params;
-  // 调用控制层去获取数据
   let curUserInfo;
   const myUserInfo = ctx.session.userInfo;
   const isMe = curUserName === myUserInfo.userName;
@@ -37,8 +37,13 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
   }
 
   // 获取第一页的数据
-  const result = await getProfileBlogList(curUserName);
-  const { isEmpty, blogList, count, pageIndex, pageSize } = result.data;
+  const blogResult = await getProfileBlogList(curUserName);
+  const { isEmpty, blogList, count, pageIndex, pageSize } = blogResult.data;
+  // 获取粉丝列表
+  const userId = curUserInfo.id;
+  const fansResult = await getFans(userId);
+  const { count: fansCount, list: fansList } = fansResult.data;
+  // 渲染页面
   await ctx.render('profile', {
     blogData: {
       isEmpty,
@@ -50,6 +55,10 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
     userData: {
       userInfo: curUserInfo,
       isMe,
+      fansData: {
+        count: fansCount,
+        list: fansList,
+      },
     },
   });
 });
