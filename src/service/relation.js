@@ -2,15 +2,16 @@
  * @Description:用户关系 service层
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-29 17:14:08
+ * @LastEditTime: 2021-05-29 19:58:25
  */
 const { User, UserRelation } = require('../db/model/index');
 const { formateUser } = require('./_formate');
 /**
- * 数据库 - 根据用户id获取粉丝列表
+ * 数据库 - 根据被关注人的 id获取粉丝列表
  * @param {Number} followerId 被关注的用户ID
+ * @ 要获取粉丝的用户详情 以粉丝的userId作为外键 去user表中查询他们的具体信息
  */
-async function getFollowerByUserId(followerId) {
+async function getUserByFollower(followerId) {
   const result = await User.findAndCountAll({
     order: [['id', 'desc']],
     attributers: ['nickName', 'userName', 'gender', 'picture'],
@@ -27,6 +28,35 @@ async function getFollowerByUserId(followerId) {
   return {
     count,
     fansList,
+  };
+}
+/**
+ * 数据库  根据userId 获取该用户关注的人的信息
+ * @param {Number} userId  用户的id
+ * @ 要获取关注人的详情 以关注的人的followerId为外键 去user中查询他们的具体信息
+ */
+async function getFollowerByUser(userId) {
+  const result = await UserRelation.findAndCountAll({
+    order: [['id', 'desc']],
+    include: {
+      model: User,
+      attributes: ['nickName', 'userName', 'picture', 'gender'],
+    },
+    where: {
+      userId,
+    },
+  });
+  const count = result.count;
+  // console.log('get follower list', result);
+  let followerList = result.rows.map(row => row.dataValues);
+  followerList = followerList.map(item => {
+    let user = item.user.dataValues;
+    user = formateUser(user);
+    return user;
+  });
+  return {
+    count,
+    followerList,
   };
 }
 /**
@@ -57,7 +87,8 @@ async function deleteFollower(userId, wantFollowId) {
 }
 
 module.exports = {
-  getFollowerByUserId,
+  getUserByFollower,
   addFollower,
   deleteFollower,
+  getFollowerByUser,
 };

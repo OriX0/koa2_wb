@@ -2,13 +2,13 @@
  * @Description: blog 视图层 路由
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-29 15:37:50
+ * @LastEditTime: 2021-05-29 19:54:03
  */
 const router = require('koa-router')();
 const { loginRedirect } = require('../../middleware/loginChecks');
 const { getProfileBlogList } = require('../../controller/blog-profile');
 const { getSquareBolgList } = require('../../controller/blog-square');
-const { getFans } = require('../../controller/blog-relation');
+const { getFans, getFollowers } = require('../../controller/blog-relation');
 const { isExist } = require('../../controller/user');
 // 访问首页
 router.get('/', loginRedirect, async (ctx, next) => {
@@ -35,12 +35,11 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
     }
     curUserInfo = existResult.data;
   }
-
+  const userId = curUserInfo.id;
   // 获取第一页的数据
   const blogResult = await getProfileBlogList(curUserName);
   const { isEmpty, blogList, count, pageIndex, pageSize } = blogResult.data;
   // 获取粉丝列表
-  const userId = curUserInfo.id;
   const fansResult = await getFans(userId);
   const { count: fansCount, list: fansList } = fansResult.data;
   // 获取我是否关注了此人
@@ -48,6 +47,10 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
   const amIFollowed = fansList.some(item => {
     return item.userName === myUserInfo.userName;
   });
+  // 获取关注列表
+  const followerResult = await getFollowers(userId);
+  const { count: followerCount, list: followerList } = followerResult.data;
+  console.log('api层 ', followerList);
   // 渲染页面
   await ctx.render('profile', {
     blogData: {
@@ -64,6 +67,10 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
       fansData: {
         count: fansCount,
         list: fansList,
+      },
+      followersData: {
+        count: followerCount,
+        list: followerList,
       },
     },
   });

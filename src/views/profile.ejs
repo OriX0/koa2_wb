@@ -1,10 +1,11 @@
 <!--
  * @Description: profile 模板文件
  *    blogData .isEmpty .count .blogList .pageIndex .pageSize
- *    userData .userInfo .isMe .amIFollowed（是否关注了） atCount   .fansData (.count list)
+ *    userData .userInfo .isMe .amIFollowed（是否关注了） atCount   .fansData (.count list)  followersData(关注者的数据)
+ *    followersData   count list
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-29 15:35:06
+ * @LastEditTime: 2021-05-29 19:45:55
 -->
 <%- include('layout/header', { title: '微博 - 个人主页', isNav: true, list: true })%>
 
@@ -45,7 +46,7 @@
       <%-include('widgets/fans', { count: userData.fansData.count, userList: userData.fansData.list })%>
 
       <!-- 关注 -->
-      <%# include('widgets/followers', { count: userData.followersData.count, userList: userData.followersData.list })%>
+      <%- include('widgets/followers', { count: userData.followersData.count, userList: userData.followersData.list })%>
     </div>
     <!-- 右侧结束 -->
   </div>
