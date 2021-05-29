@@ -2,7 +2,7 @@
  * @Description: 失败信息的集合 包括 errNo 和message
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-28 15:15:50
+ * @LastEditTime: 2021-05-29 16:11:04
  */
 module.exports = {
   // 用户名已存在
@@ -43,6 +43,16 @@ module.exports = {
   deleteUserFailInfo: {
     errNo: 10010,
     message: '删除用户失败',
+  },
+  // 添加关注失败
+  addFollowerFailInfo: {
+    errNo: 10011,
+    message: '添加关注失败',
+  },
+  // 取消关注失败
+  deleteFollowerFailInfo: {
+    errNo: 10012,
+    message: '取消关注失败',
   },
   // 创建微博失败
   createBlogFailInfo: {

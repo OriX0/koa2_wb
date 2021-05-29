@@ -2,7 +2,7 @@
  * @Description: blog 视图层 路由
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-29 15:20:56
+ * @LastEditTime: 2021-05-29 15:37:50
  */
 const router = require('koa-router')();
 const { loginRedirect } = require('../../middleware/loginChecks');
@@ -43,6 +43,11 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
   const userId = curUserInfo.id;
   const fansResult = await getFans(userId);
   const { count: fansCount, list: fansList } = fansResult.data;
+  // 获取我是否关注了此人
+  // 遍历粉丝列表 看看其中有没有我
+  const amIFollowed = fansList.some(item => {
+    return item.userName === myUserInfo.userName;
+  });
   // 渲染页面
   await ctx.render('profile', {
     blogData: {
@@ -55,6 +60,7 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
     userData: {
       userInfo: curUserInfo,
       isMe,
+      amIFollowed,
       fansData: {
         count: fansCount,
         list: fansList,
