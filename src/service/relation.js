@@ -2,10 +2,11 @@
  * @Description:用户关系 service层
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-29 19:58:25
+ * @LastEditTime: 2021-05-30 16:50:40
  */
 const { User, UserRelation } = require('../db/model/index');
 const { formateUser } = require('./_formate');
+const sequelize = require('sequelize');
 /**
  * 数据库 - 根据被关注人的 id获取粉丝列表
  * @param {Number} followerId 被关注的用户ID
@@ -19,6 +20,10 @@ async function getUserByFollower(followerId) {
       model: UserRelation,
       where: {
         followerId,
+        // 剔除userId = followerId 的情况
+        userId: {
+          [sequelize.Op.ne]: followerId,
+        },
       },
     },
   });
@@ -44,6 +49,10 @@ async function getFollowerByUser(userId) {
     },
     where: {
       userId,
+      // 剔除followerId = userId的情况
+      followerId: {
+        [sequelize.Op.ne]: userId,
+      },
     },
   });
   const count = result.count;

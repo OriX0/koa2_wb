@@ -2,10 +2,11 @@
  * @Description: user service层 处理数据 格式化数据
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-26 16:39:40
+ * @LastEditTime: 2021-05-30 16:43:59
  */
 const { User } = require('../db/model/index');
 const { formateUser } = require('./_formate');
+const { addFollower } = require('./relation');
 /**
  * 获取用户信息
  * @param {String} userName 用户名
@@ -44,7 +45,10 @@ async function createUser({ userName, password, gender, nickName }) {
     gender,
     nickName: nickName ? nickName : userName,
   });
-  return result.dataValues;
+  const data = result.dataValues;
+  // 创建用户后 自己关注自己
+  addFollower(data.id, data.id);
+  return data;
 }
 /**
  * 数据库 删除某个用户
