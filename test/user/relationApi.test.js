@@ -2,7 +2,7 @@
  * @Description: 用户关系相关的api 单元测试
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-29 21:16:01
+ * @LastEditTime: 2021-05-30 21:03:26
  */
 const server = require('../server');
 const { w_COOKIES, w_ID, w_userName, t_ID, t_userName } = require('../testUserInfo');
@@ -28,7 +28,7 @@ test('查看test的粉丝目录里面应该有wuhu1 ', async () => {
 });
 // 查看wuhu1的关注目录里面应该有test
 test('查看wuhu1的关注目录里面应该有test ', async () => {
-  const result = await getFollowers(t_ID);
+  const result = await getFollowers(w_ID);
   const { count, list } = result.data;
   const haveUserName = list.some(item => item.userName === t_userName);
   expect(haveUserName).toBe(true);
