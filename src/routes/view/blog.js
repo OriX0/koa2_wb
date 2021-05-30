@@ -2,17 +2,49 @@
  * @Description: blog 视图层 路由
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-29 20:12:25
+ * @LastEditTime: 2021-05-30 19:28:42
  */
 const router = require('koa-router')();
 const { loginRedirect } = require('../../middleware/loginChecks');
 const { getProfileBlogList } = require('../../controller/blog-profile');
 const { getSquareBolgList } = require('../../controller/blog-square');
 const { getFans, getFollowers } = require('../../controller/blog-relation');
+const { getHomeBlog } = require('../../controller/blog-home');
 const { isExist } = require('../../controller/user');
 // 访问首页
 router.get('/', loginRedirect, async (ctx, next) => {
-  await ctx.render('index', {});
+  const myUserInfo = ctx.session.userInfo;
+  const userId = myUserInfo.id;
+  // 获取粉丝列表
+  const fansResult = await getFans(userId);
+  const { count: fansCount, list: fansList } = fansResult.data;
+  // 获取关注列表
+  const followerResult = await getFollowers(userId);
+  const { count: followerCount, list: followerList } = followerResult.data;
+  // 获取关注人 以及自己的博客
+  const blogResult = await getHomeBlog(userId);
+  const { isEmpty, blogList, count, pageIndex, pageSize } = blogResult.data;
+  // 渲染页面
+  await ctx.render('index', {
+    blogData: {
+      isEmpty,
+      blogList,
+      count,
+      pageIndex,
+      pageSize,
+    },
+    userData: {
+      userInfo: myUserInfo,
+      fansData: {
+        count: fansCount,
+        list: fansList,
+      },
+      followersData: {
+        count: followerCount,
+        list: followerList,
+      },
+    },
+  });
 });
 // 访问个人主页
 router.get('/profile', loginRedirect, async (ctx, next) => {
