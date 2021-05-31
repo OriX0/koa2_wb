@@ -2,7 +2,7 @@
  * @Description: 用户关系相关的api 单元测试
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-30 21:03:26
+ * @LastEditTime: 2021-05-31 14:44:11
  */
 const server = require('../server');
 const { w_COOKIES, w_ID, w_userName, t_ID, t_userName } = require('../testUserInfo');
@@ -33,6 +33,15 @@ test('查看wuhu1的关注目录里面应该有test ', async () => {
   const haveUserName = list.some(item => item.userName === t_userName);
   expect(haveUserName).toBe(true);
 });
+// 获得wuhu1的艾特列表 里面应该有test
+test('获得wuhu1的艾特列表 里面应该有test ', async () => {
+  const result = await server.get('/api/user/getAtList').set('cookie', w_COOKIES);
+  const haveTest = result.body.some(item => {
+    return item.includes(`-${t_userName}`);
+  });
+  expect(haveTest).toBe(true);
+});
+
 // 取消关注
 test('wuhu1测试取消关注 test 应该成功 ', async () => {
   const result = await server.post('/api/profile/unfollow').send({ userId: t_ID }).set('cookie', w_COOKIES);
