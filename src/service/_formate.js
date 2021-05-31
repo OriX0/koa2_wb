@@ -2,9 +2,9 @@
  * @Description: 格式化处理数据
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-30 19:13:30
+ * @LastEditTime: 2021-05-31 14:29:01
  */
-const { DEFAULT_PICTURE_URL } = require('../conf/constant');
+const { DEFAULT_PICTURE_URL, REF_FOR_AT_WHO } = require('../conf/constant');
 const { timeFormat } = require('../utils/dataTime');
 /**
  * 当pic url为空的时候自动赋能
@@ -24,6 +24,18 @@ function _formatePicUrl(userObj) {
 function _formatDBTime(obj) {
   obj.createdAtFormat = timeFormat(obj.createdAt);
   obj.updatedAtFormat = timeFormat(obj.updatedAt);
+  return obj;
+}
+/**
+ * 格式化微博内容
+ * 检测@ 将@ 后面变成链接的形式
+ * @param {Object} obj
+ */
+function _formateContent(obj) {
+  obj.contentFormate = obj.content;
+  obj.contentFormate = obj.contentFormate.replace(REF_FOR_AT_WHO, (matchStr, nickName, userName) => {
+    return `<a href="/profile/${userName}">@${nickName}</a>`;
+  });
   return obj;
 }
 /**
@@ -51,10 +63,12 @@ function fromateBlog(list) {
   }
   // 如果传入的是用户列表 则map批量更新
   if (list instanceof Array) {
-    return list.map(_formatDBTime);
+    return list.map(_formatDBTime).map(_formateContent);
   }
   // 是单个obj的情况
-  return _formatDBTime(list);
+  let res = _formatDBTime(list);
+  res = _formateContent(res);
+  return res;
 }
 module.exports = {
   formateUser,

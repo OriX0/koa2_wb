@@ -2,7 +2,7 @@
  * @Description: user api
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-26 18:53:31
+ * @LastEditTime: 2021-05-31 14:10:19
  */
 const router = require('koa-router')();
 const {
@@ -18,6 +18,7 @@ const userValidate = require('../../validate/user');
 const { generateValidate } = require('../../middleware/validate');
 const { isTest } = require('../../utils/env');
 const { loginCheck } = require('../../middleware/loginChecks');
+const { getFollowers } = require('../../controller/blog-relation');
 router.prefix('/api/user');
 // 用户名是否存在
 router.post('/isExist', async (ctx, next) => {
@@ -63,5 +64,16 @@ router.patch('/changePassword', loginCheck, generateValidate(userValidate), asyn
 router.post('/logout', loginCheck, async (ctx, next) => {
   // 调用控制层
   ctx.body = await logOut(ctx);
+});
+// 获取at人列表
+router.get('/getAtList', loginCheck, async (ctx, next) => {
+  const { id: myUserId } = ctx.session.userInfo;
+  // 调用控制层
+  const result = await getFollowers(myUserId);
+  const followerData = result.data.list;
+  const list = followerData.map(follower => {
+    return `${follower.nickName}-${follower.userName}`;
+  });
+  ctx.body = list;
 });
 module.exports = router;
