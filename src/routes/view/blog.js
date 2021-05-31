@@ -2,7 +2,7 @@
  * @Description: blog 视图层 路由
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-30 19:28:42
+ * @LastEditTime: 2021-05-31 17:09:27
  */
 const router = require('koa-router')();
 const { loginRedirect } = require('../../middleware/loginChecks');
@@ -11,6 +11,7 @@ const { getSquareBolgList } = require('../../controller/blog-square');
 const { getFans, getFollowers } = require('../../controller/blog-relation');
 const { getHomeBlog } = require('../../controller/blog-home');
 const { isExist } = require('../../controller/user');
+const { getAtMeCount } = require('../../controller/blog-at');
 // 访问首页
 router.get('/', loginRedirect, async (ctx, next) => {
   const myUserInfo = ctx.session.userInfo;
@@ -24,6 +25,9 @@ router.get('/', loginRedirect, async (ctx, next) => {
   // 获取关注人 以及自己的博客
   const blogResult = await getHomeBlog(userId);
   const { isEmpty, blogList, count, pageIndex, pageSize } = blogResult.data;
+  // 获取at我的count总数
+  const atMeCountResult = await getAtMeCount(userId);
+  const atCount = atMeCountResult.data.count;
   // 渲染页面
   await ctx.render('index', {
     blogData: {
@@ -35,6 +39,7 @@ router.get('/', loginRedirect, async (ctx, next) => {
     },
     userData: {
       userInfo: myUserInfo,
+      atCount,
       fansData: {
         count: fansCount,
         list: fansList,
@@ -82,6 +87,9 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
   // 获取关注列表
   const followerResult = await getFollowers(userId);
   const { count: followerCount, list: followerList } = followerResult.data;
+  // 获取at我的count总数
+  const atMeCountResult = await getAtMeCount(myUserInfo.id);
+  const atCount = atMeCountResult.data.count;
   // 渲染页面
   await ctx.render('profile', {
     blogData: {
@@ -93,6 +101,7 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
     },
     userData: {
       userInfo: curUserInfo,
+      atCount,
       isMe,
       amIFollowed,
       fansData: {
