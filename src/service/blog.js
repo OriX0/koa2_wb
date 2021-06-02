@@ -2,7 +2,7 @@
  * @Description: blog 服务层
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-30 19:26:48
+ * @LastEditTime: 2021-06-02 14:45:45
  */
 const { Blog, User, UserRelation } = require('../db/model/index');
 const { formateUser, fromateBlog } = require('./_formate');
@@ -46,6 +46,7 @@ async function getBlogListByUser({ userName, pageIndex = 0, pageSize = 5 }) {
     blogItem.user = formateUser(user);
     return blogItem;
   });
+  blogList = fromateBlog(blogList);
 
   return {
     count,
