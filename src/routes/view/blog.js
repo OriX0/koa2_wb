@@ -2,7 +2,7 @@
  * @Description: blog 视图层 路由
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-06-02 14:02:49
+ * @LastEditTime: 2021-06-02 14:26:40
  */
 const router = require('koa-router')();
 const { loginRedirect } = require('../../middleware/loginChecks');
@@ -137,7 +137,7 @@ router.get('/at-me', loginRedirect, async (ctx, next) => {
   const myUserId = ctx.session.userInfo.id;
   // 读取数据
   const blogResult = await getAtMeBlog(myUserId);
-  const { blogList, pageIndex, pageSize, count } = blogResult.data;
+  const { blogList, pageIndex, pageSize, count, isEmpty } = blogResult.data;
   // 获取at我的count总数
   const atMeCountResult = await getAtMeCount(myUserId);
   const atCount = atMeCountResult.data.count;
@@ -145,6 +145,7 @@ router.get('/at-me', loginRedirect, async (ctx, next) => {
   await ctx.render('atMe', {
     atCount,
     blogData: {
+      isEmpty,
       blogList,
       count,
       pageIndex,
