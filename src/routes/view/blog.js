@@ -2,7 +2,7 @@
  * @Description: blog 视图层 路由
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-31 17:09:27
+ * @LastEditTime: 2021-06-02 14:02:49
  */
 const router = require('koa-router')();
 const { loginRedirect } = require('../../middleware/loginChecks');
@@ -12,6 +12,7 @@ const { getFans, getFollowers } = require('../../controller/blog-relation');
 const { getHomeBlog } = require('../../controller/blog-home');
 const { isExist } = require('../../controller/user');
 const { getAtMeCount } = require('../../controller/blog-at');
+const { getAtMeBlog } = require('../../controller/blog-at');
 // 访问首页
 router.get('/', loginRedirect, async (ctx, next) => {
   const myUserInfo = ctx.session.userInfo;
@@ -124,6 +125,26 @@ router.get('/square', loginRedirect, async (ctx, next) => {
   await ctx.render('square', {
     blogData: {
       isEmpty,
+      blogList,
+      count,
+      pageIndex,
+      pageSize,
+    },
+  });
+});
+// 访问atMe
+router.get('/at-me', loginRedirect, async (ctx, next) => {
+  const myUserId = ctx.session.userInfo.id;
+  // 读取数据
+  const blogResult = await getAtMeBlog(myUserId);
+  const { blogList, pageIndex, pageSize, count } = blogResult.data;
+  // 获取at我的count总数
+  const atMeCountResult = await getAtMeCount(myUserId);
+  const atCount = atMeCountResult.data.count;
+  // 渲染页面
+  await ctx.render('atMe', {
+    atCount,
+    blogData: {
       blogList,
       count,
       pageIndex,

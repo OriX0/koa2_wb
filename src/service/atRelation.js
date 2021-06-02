@@ -2,9 +2,10 @@
  * @Description: @ 关系的 控制层
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-31 17:01:28
+ * @LastEditTime: 2021-06-02 14:03:32
  */
-const { AtRelation } = require('../db/model/index');
+const { AtRelation, Blog, User } = require('../db/model/index');
+const { formateUser, fromateBlog } = require('./_formate');
 /**
  * 创建 博客和艾特的关系
  * @param {Number} userId
@@ -32,4 +33,40 @@ async function getAtCountByUser(userId) {
   });
   return result.count;
 }
-module.exports = { createAtRelation, getAtCountByUser };
+/**
+ * 数据库 根据用户id 查询at该用户的 微博 及用户信息
+ * @param {*} userId
+ */
+async function getAtCountBlogListByUser(userId, pageIndex = 0, pageSize = 5) {
+  const result = await Blog.findAndCountAll({
+    order: [['id', 'desc']],
+    limit: pageSize,
+    offset: pageIndex * pageSize,
+    include: [
+      {
+        model: AtRelation,
+        attributes: ['userId', 'blogId'],
+        where: {
+          userId,
+        },
+      },
+      {
+        model: User,
+        attributes: ['nickName', 'userName', 'picture'],
+      },
+    ],
+  });
+  const count = result.count;
+  let blogList = result.rows.map(row => row.dataValues);
+  blogList = fromateBlog(blogList);
+  blogList.map(item => {
+    const user = item.user.dataValues;
+    item.user = formateUser(user);
+    return item;
+  });
+  return {
+    count,
+    blogList,
+  };
+}
+module.exports = { createAtRelation, getAtCountByUser, getAtCountBlogListByUser };
