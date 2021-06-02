@@ -2,7 +2,7 @@
  * @Description: blog 视图层 路由
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-06-02 14:43:26
+ * @LastEditTime: 2021-06-02 15:10:25
  */
 const router = require('koa-router')();
 const { loginRedirect } = require('../../middleware/loginChecks');
@@ -11,8 +11,7 @@ const { getSquareBolgList } = require('../../controller/blog-square');
 const { getFans, getFollowers } = require('../../controller/blog-relation');
 const { getHomeBlog } = require('../../controller/blog-home');
 const { isExist } = require('../../controller/user');
-const { getAtMeCount } = require('../../controller/blog-at');
-const { getAtMeBlog } = require('../../controller/blog-at');
+const { getAtMeCount, markAsRead, getAtMeBlog } = require('../../controller/blog-at');
 // 访问首页
 router.get('/', loginRedirect, async (ctx, next) => {
   const myUserInfo = ctx.session.userInfo;
@@ -151,5 +150,10 @@ router.get('/at-me', loginRedirect, async (ctx, next) => {
       pageSize,
     },
   });
+  // 进入atMe页面后 该页面的数据标记为已读
+  if (atCount > 0) {
+    // 调用控制层
+    await markAsRead(myUserId);
+  }
 });
 module.exports = router;

@@ -1,8 +1,8 @@
 /*
- * @Description: @ 关系的 控制层
+ * @Description: @ 关系的 服务层
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-06-02 14:03:32
+ * @LastEditTime: 2021-06-02 15:09:15
  */
 const { AtRelation, Blog, User } = require('../db/model/index');
 const { formateUser, fromateBlog } = require('./_formate');
@@ -69,4 +69,26 @@ async function getAtCountBlogListByUser(userId, pageIndex = 0, pageSize = 5) {
     blogList,
   };
 }
-module.exports = { createAtRelation, getAtCountByUser, getAtCountBlogListByUser };
+/**
+ * 更新 at 关系
+ * @param {Object} param0 更新内容 newIsRead
+ * @param {Object} param1 查询条件 userId, isRead
+ */
+async function upadateAtRealtion({ newIsRead }, { userId, isRead }) {
+  // 拼接更新内容
+  const updateObj = {};
+  if (newIsRead) {
+    updateObj.isRead = newIsRead;
+  }
+  //拼接查询条件
+  const whereObj = {};
+  if (userId) {
+    whereObj.userId = userId;
+  }
+  if (isRead) {
+    whereObj.isRead = isRead;
+  }
+  const result = await AtRelation.update(updateObj, { where: whereObj });
+  return result[0] > 0;
+}
+module.exports = { createAtRelation, getAtCountByUser, getAtCountBlogListByUser, upadateAtRealtion };

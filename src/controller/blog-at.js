@@ -2,10 +2,10 @@
  * @Description: 微博 艾特 控制层
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-06-02 14:24:51
+ * @LastEditTime: 2021-06-02 15:09:49
  */
 const { SuccessModel } = require('../model/ResModel');
-const { getAtCountByUser, getAtCountBlogListByUser } = require('../service/atRelation');
+const { getAtCountByUser, getAtCountBlogListByUser, upadateAtRealtion } = require('../service/atRelation');
 const { DEFAULT_PAGE_SIZE } = require('../conf/constant');
 /**
  * 根据用户id 获取 at 该用户且未读的微博 数量
@@ -32,7 +32,19 @@ async function getAtMeBlog(userId, pageIndex = 0, pageSize = DEFAULT_PAGE_SIZE) 
     pageSize,
   });
 }
+/**
+ * 根据用户id 标记所有未读的微博为已读
+ * @param {Number} userId
+ */
+async function markAsRead(userId) {
+  try {
+    await upadateAtRealtion({ newIsRead: true }, { userId, isRead: false });
+  } catch (error) {
+    console.log(error.message, error.stack);
+  }
+}
 module.exports = {
   getAtMeCount,
   getAtMeBlog,
+  markAsRead,
 };
