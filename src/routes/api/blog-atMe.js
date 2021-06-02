@@ -2,7 +2,7 @@
  * @Description: 艾特me页面相关api
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-06-02 14:17:59
+ * @LastEditTime: 2021-06-02 14:31:24
  */
 const router = require('koa-router')();
 const { loginRedirect } = require('../../middleware/loginChecks');
@@ -14,7 +14,7 @@ router.get('/loadMore/:pageIndex', loginRedirect, async (ctx, next) => {
   pageIndex = parseInt(pageIndex);
   const { id: myUserId } = ctx.session.userInfo;
   const blogResult = await getAtMeBlog(myUserId, pageIndex);
-  blogResult.data.blogListTpl = getBlogListStr(blogResult.data.blogList);
+  blogResult.data.blogListTpl = getBlogListStr(blogResult.data.blogList, true);
   ctx.body = blogResult;
 });
 
