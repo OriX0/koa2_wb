@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: OriX
  * @LastEditors: OriX
- * @LastEditTime: 2021-05-28 17:08:28
+ * @LastEditTime: 2021-06-02 14:43:33
 -->
 <!-- 传入 blogData  属性 isEmpty blogList pageSize pageIndex count-->
 <%- include('layout/header', { title: '微博 - 广场', isNav: true, list: true })%>
@@ -20,7 +20,7 @@
       <% } else { %>
       <!-- 微博列表 -->
       <div id="container-weibo-list" class="weibo-list">
-        <%- include('widgets/blog-list', { blogList: blogData.blogList })%>
+        <%- include('widgets/blog-list', { blogList: blogData.blogList,canReply:true })%>
       </div>
       <!-- 微博列表 结束 -->
       <!-- 加载更多 -->
